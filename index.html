@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pixel Art Maker!</title>
+  <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed:400,500,600" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://bgrins.github.io/spectrum/spectrum.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- download image modal -->
+  <aside class="modal-download">
+      <div class="modal-popup">
+        <svg class="modal-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 106.4 89.2">
+        	<path class="svg-gray" d="M106.4 44.6c0-3.3-1.3-6.4-3.5-8.7V21.2c2.3-2.3 3.5-5.5 3.5-8.7 0-3.5-1.4-6.6-3.7-8.9C100.5 1.4 97.3 0 93.9 0c-3.3 0-6.4 1.3-8.7 3.5H61.9C59.6 1.3 56.5 0 53.2 0c-3.3 0-6.4 1.3-8.7 3.5H21.2C18.9 1.3 15.8 0 12.5 0 9.1 0 5.9 1.4 3.7 3.7 1.4 5.9 0 9.1 0 12.5c0 3.2 1.3 6.4 3.5 8.7v14.7C1.3 38.2 0 41.4 0 44.6c0 3.2 1.3 6.4 3.5 8.7V68C1.3 70.3 0 73.4 0 76.7c0 3.5 1.4 6.6 3.7 8.9 2.3 2.3 5.4 3.7 8.9 3.7 3.3 0 6.4-1.3 8.7-3.5h23.3c2.3 2.3 5.4 3.5 8.7 3.5 3.3 0 6.4-1.3 8.7-3.5h23.3c2.3 2.3 5.4 3.5 8.7 3.5 3.4 0 6.4-1.4 8.7-3.6 2.4-2.2 3.8-5.7 3.8-9 0-3.3-1.3-6.4-3.5-8.7V53.3C105.1 51 106.4 47.9 106.4 44.6zM99.7 38.3c1.8 1.6 2.7 3.9 2.7 6.3 0 2.5-1 4.8-2.9 6.4 -0.5 0.4-0.6 1-0.6 1.6v16.2c0 0.6 0.3 1.2 0.8 1.6 1.8 1.6 2.7 3.9 2.7 6.3 0 2.5-0.9 4.4-2.6 6.2 -1.5 1.5-3.7 2.4-6 2.4 -2.5 0-4.8-1-6.4-2.9 -0.4-0.4-0.9-0.7-1.5-0.7H61.1c-0.6 0-1.2 0.3-1.6 0.8 -1.5 1.8-4 2.7-6.3 2.7 -2.5 0-4.8-1-6.4-2.9 -0.4-0.4-0.9-0.7-1.5-0.7H20.4c-0.6 0-1.2 0.3-1.6 0.8 -1.6 1.8-3.9 2.7-6.3 2.7 -2.4 0-4.5-1-6.1-2.5 -1.6-1.6-2.5-3.7-2.5-6.1 0-2.5 1-4.8 2.9-6.4 0.4-0.4 0.7-0.9 0.7-1.5V52.5c0-0.6-0.3-1.2-0.8-1.6 -1.8-1.5-2.7-4-2.7-6.3 0-2.5 1-4.8 2.9-6.4 0.4-0.4 0.7-0.9 0.7-1.5l0-16.3c0-0.6-0.3-1.2-0.8-1.6 -1.8-1.6-2.7-3.9-2.7-6.3 0-2.4 1-4.5 2.5-6.1 1.6-1.6 3.7-2.5 6.1-2.5 2.5 0 4.8 1 6.4 2.9 0.4 0.4 0.9 0.7 1.5 0.7l24.9 0c0.6 0 1.2-0.3 1.6-0.8 1.6-1.8 3.9-2.7 6.3-2.7 2.5 0 4.8 1 6.4 2.9 0.4 0.5 1 0.6 1.6 0.6l24.7 0c0.6 0 1.2-0.3 1.6-0.8 1.6-1.8 3.9-2.7 6.3-2.7 2.4 0 4.5 1 6.1 2.5 1.6 1.6 2.5 3.7 2.5 6.1 0 2.5-1 4.8-2.9 6.4 -0.5 0.4-0.6 1-0.6 1.6l0 16.2C98.9 37.4 99.3 37.9 99.7 38.3z M91.7 12H14.8c-1.6 0-2.8 1.2-2.8 2.8v59.7c0 1.6 1.2 2.8 2.8 2.8h76.9c1.6 0 2.8-1.2 2.8-2.8V14.8C94.4 13.1 93.3 12 91.7 12zM18.7 73.3l19.1-19.1 5.7 5.7L30.1 73.3H18.7zM35.7 73.3l26-26 12.6 12.6L60.9 73.3H35.7zM66.5 73.3l10.6-10.6 10.6 10.6H66.5zM90.5 70.5L63.1 43.1c-0.8-0.8-2-0.8-2.8 0l-14 14L39.2 50c-0.8-0.8-2-0.8-2.8 0L15.9 70.5V15.9h74.6V70.5z"/>
+        	<path class="svg-accent" d="M15.9 15.9v54.6L36.4 50c0.8-0.8 2-0.8 2.8 0l7.1 7.1 14-14c0.8-0.8 2-0.8 2.8 0l27.4 27.4V15.9H15.9zM44.2 38.6c-3.5 0-6.4-2.9-6.4-6.4s2.9-6.4 6.4-6.4 6.4 2.9 6.4 6.4S47.8 38.6 44.2 38.6z"/>
+        </svg>
+        <h3>Pixel Perfection!</h3>
+        <p>Would you like to save a copy of your masterpiece?</p>
+        <div class="modal-button-container">
+          <input type="button" value="Ok" class="modal-submit">
+          <input type="button" value="Cancel" class="modal-cancel">
+        </div>
+      </div>
+  </aside>
+  <!-- download error modal -->
+  <aside class="modal-error">
+      <div class="modal-popup error">
+        <svg class="modal-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 106.6 114.2">
+        	<polygon class="svg-accent" points="62.6 83.5 24.7 45.7 19.9 50.4 57.8 88.3 62.6 83.5 "/><path class="svg-accent" d="M105.9 40.4c-1-1-2.8-0.7-4 0.5l-0.6 0.6c-1.3 1.3-3 1.6-3.8 0.7 -0.8-0.8-0.5-2.6 0.7-3.8l5.1-5.1c1.3-1.3 1.4-3.2 0.3-4.3 -1.1-1.1-3-1-4.3 0.3L94.5 34c-1.3 1.3-3.1 1.5-4.1 0.5 -1-1-0.8-2.8 0.5-4.1l3.7-3.7c1.3-1.3 1.3-3.3 0.1-4.5 -1.2-1.2-3.2-1.2-4.5 0.1L89 23.5c-1.3 1.3-3.3 1.3-4.6 0l-3.9-3.9c-1.3-1.3-1.4-3.1-0.4-4.1 1-1 1-2.7-0.1-3.8 -1-1-2.9-0.9-4.2 0.4L74 13.9c-1.3 1.3-3.3 1.3-4.6 0l-2-2c-1.3-1.3-1.3-3.3-0.1-4.5 0.1-0.1 2.3-2.4 2.3-2.4 1.3-1.3 1.4-3.2 0.3-4.3 -1.1-1.1-3-1-4.3 0.3L27.9 38.8c0.9-0.8 2.3-0.8 3.2 0.1l38.3 38.3c0.9 0.9 0.9 2.3 0.1 3.2 0 0 36.3-36.3 36.4-36.4C106.8 42.9 106.8 41.3 105.9 40.4zM55.9 27L44.6 38.3c-0.6 0.6-1.3 0.8-2 0.8 -0.7 0-1.4-0.3-2-0.8 -1.1-1.1-1.1-2.9 0-4L51.9 23c1.1-1.1 2.9-1.1 4 0C57 24.1 57 25.9 55.9 27zM82.3 37.8L80 40.1c-1.3 1.3-3.2 1.4-4.3 0.3 -1.1-1.1-1-3 0.3-4.3l2.3-2.3c1.3-1.3 3.2-1.4 4.3-0.3C83.7 34.6 83.6 36.6 82.3 37.8z"/><path class="svg-gray" d="M69.4 77.1L31.1 38.8c-0.9-0.9-2.4-0.9-3.3 0l-10 10c0 0-0.7 0.6-0.7 1.7 0 1 0.7 1.7 0.7 1.7l29.8 29.8h0l8.5 8.5c0.9 0.9 2.4 0.9 3.3 0l4-4 1.7 1.7 -8 8L32.1 81.5c-0.5-0.3-1.2-0.3-1.7 0.2l-3 3 -4.1-4.1c-0.8-0.8-1.9-0.5-2.2 0.6l-1.7 6.3L0.6 106.4c-0.8 0.8-0.8 2.2 0 3l4.1 4.1c0.8 0.8 2.2 0.8 3 0l18.9-18.9 6.3-1.7c1.1-0.3 1.4-1.4 0.6-2.2l-4.1-4.1 2.3-2.3 25.2 14.5c0.5 0.3 1.2 0.2 1.6-0.2L68 89c0.5-0.5 0.5-1.4 0-1.9l-2.7-2.7 4-4C70.3 79.5 70.3 78 69.4 77.1zM6.2 111.2l-3.3-3.3L20 90.7l3.3 3.3L6.2 111.2zM29.9 90.9l-4.8 1.3 -3.3-3.3 1.3-4.8L29.9 90.9zM57.8 88.3L19.9 50.4l4.8-4.8h0l4.8-4.8 37.8 37.8L57.8 88.3z"/><circle class="svg-gray" cx="7.2" cy="106.9" r="1.3"/>
+        </svg>
+        <h3>Slow Your Roll!</h3>
+        <p>You need to create a pixel art project before downloading!</p>
+        <div class="modal-button-container">
+          <input type="button" value="Ok" class="modal-cancel">
+        </div>
+      </div>
+  </aside>
+  <!-- grid size error modal -->
+  <aside class="modal-grid-max">
+      <div class="modal-popup grid-max">
+        <svg class="modal-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.5 89.2">
+        	<path class="svg-gray" d="M57.3 10.9c1.1 0 2-0.9 2-2l0-5.5c0-1.1-0.9-2-2-2 -1.1 0-2 0.9-2 2l0 5.5C55.3 10.1 56.2 10.9 57.3 10.9z"/><path class="svg-gray" d="M39.7 12.9c0.4 1 1.6 1.5 2.6 1.1 1-0.4 1.5-1.6 1.1-2.6L39.2 1.3c-0.4-1-1.6-1.5-2.6-1.1 -1 0.4-1.5 1.6-1.1 2.6L39.7 12.9z"/><ellipse transform="matrix(0.7069 -0.7074 0.7074 0.7069 -40.6864 39.0269)" class="svg-gray" cx="26.7" cy="68.6" rx="2" ry="2"/><ellipse transform="matrix(0.7071 -0.7071 0.7071 0.7071 -38.15 32.9049)" class="svg-gray" cx="20.6" cy="62.5" rx="2" ry="2"/><path class="svg-gray" d="M26.7 22.5c0.8 0.8 2 0.8 2.8 0 0.8-0.8 0.8-2 0-2.8l-3.9-3.9c-0.8-0.8-2-0.8-2.8 0 -0.8 0.8-0.8 2 0 2.8L26.7 22.5z"/><path class="svg-gray" d="M114.4 86.5l-6.7-24.9c-0.1-0.4-0.3-0.6-0.5-0.9L77.1 30.7c-0.8-0.8-2.1-0.9-2.9-0.1l-6.1 6.1c-0.4 0.4-0.6 0.9-0.6 1.4l0 10.2 -8.3 0V38c0-1.1-0.9-2-2-2l-11.4 0 -5.5-5.5c-0.8-0.8-2-0.8-2.8 0L2.2 66c-2.8 2.8-2.7 7.3 0 10l11 11c2.8 2.8 7.3 2.8 10 0L57.3 53l28.7 28.7c0.3 0.3 0.7 0.6 1.1 0.7l24.7 6.6C113.5 89.5 114.8 88 114.4 86.5zM45.9 40l6.6 0L31.6 60.9l-3.3-3.3L45.9 40zM39 34.7l3.3 3.3L25.5 54.8l-3.3-3.3L39 34.7zM20.5 84.3c-1.2 1.2-3.2 1.2-4.5 0l-11-11c-1.2-1.2-1.2-3.2 0-4.5l4.7-4.7 15.5 15.5L20.5 84.3zM28 76.8L12.5 61.3l7-7 15.5 15.5L28 76.8zM55.3 49.4L37.7 67l-3.3-3.3 20.9-20.9V49.4zM75.6 34.7l28.5 28.5 0.5 2 -5.2 0L72.3 38 75.6 34.7zM88.6 78.7L62.1 52.2l6.6 0 21.9 21.9 0 5.1L88.6 78.7zM71.5 49.4l0-6.6 26 26 0 3.3h-3.4L71.5 49.4zM102.7 82.5l-8.1-2.2 0-4.3 4.8 0c1.1 0 2-0.9 2-2l0-4.8 4.3 0 2.2 8.1L102.7 82.5z"/><path class="svg-gray" d="M72.3 13.9c1 0.4 2.2-0.1 2.6-1.1l4.2-10.1c0.4-1-0.1-2.2-1.1-2.6 -1-0.4-2.2 0.1-2.6 1.1l-4.2 10.1C70.9 12.4 71.3 13.5 72.3 13.9z"/><path class="svg-gray" d="M87.9 22.5l3.9-3.9c0.8-0.8 0.8-2 0-2.8 -0.8-0.8-2-0.8-2.8 0l-3.9 3.9c-0.8 0.8-0.8 2 0 2.8C85.9 23.2 87.1 23.2 87.9 22.5z"/><path class="svg-accent" d="M25.2 79.6L9.7 64.1l-4.7 4.7c-1.2 1.2-1.2 3.2 0 4.5l11 11c1.2 1.2 3.2 1.2 4.5 0L25.2 79.6 25.2 79.6zM99.5 65.2L72.3 38l3.3-3.3 28.5 28.5 0.5 2L99.5 65.2 99.5 65.2zM94.1 72.1L71.5 49.4l0-6.6 26 26 0 3.3H94.1L94.1 72.1zM68.7 52.2l21.9 21.9 0 5.1 -2.1-0.6L62.1 52.2 68.7 52.2 68.7 52.2zM42.3 38L39 34.7 22.2 51.5l3.3 3.3L42.3 38 42.3 38zM52.6 40l-6.6 0L28.3 57.6l3.3 3.3L52.6 40 52.6 40zM37.7 67l17.6-17.6v-6.6L34.4 63.7 37.7 67 37.7 67z"/>
+        </svg>
+        <h3>Oh, Snap!</h3>
+        <p class="grid-max-alert"></p>
+        <div class="modal-button-container">
+          <input type="button" value="Ok" class="modal-cancel">
+        </div>
+      </div>
+  </aside>
+  <!-- start main content -->
+  <div id="main-container">
+    <!-- mobile flyout menu -->
+    <div class="flyout-menu">
+      <div class="flyout-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <!-- begin sidebar -->
+    <div class="sidebar-container">
+      <div id="sidebar">
+        <!-- logo -->
+        <div class="logo-plus">
+          <svg class="plus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+          	<defs><rect width="40" height="40"/></defs><clipPath><use xlink:href="#SVGID_1_"/></clipPath><path class="svg-accent" d="M39 16.3H24.3c-0.3 0-0.4-0.1-0.4-0.4V1c0-0.7-0.3-1-1-1h-5.8c-0.7 0-1 0.3-1 1v14.9c0 0.3-0.1 0.4-0.4 0.4H1c-0.7 0-1 0.3-1 1V23c0 0.7 0.3 1 1 1h14.8c0.3 0 0.4 0.1 0.4 0.4V39c0 0.7 0.3 1 1 1h5.8c0.7 0 1-0.3 1-1V24.4c0-0.3 0.1-0.4 0.4-0.4H39c0.7 0 1-0.3 1-1v-5.8C40 16.6 39.7 16.3 39 16.3"/>
+          </svg>
+        </div>
+        <div class="logo-title">
+          <h1>Pixel Art Maker</h1>
+        </div>
+        <!-- grid form -->
+        <div class="toolbox">
+          <form id="size-picker">
+            <label for="input-width" class="space-between">Grid Width:<span class="rangeslider--width"></span></label>
+            <input type="range" id="input-width" name="width" min="1" max="100" value="15" data-rangeslider>
+            <label for="input-height" class="space-between">Grid Height:<span class="rangeslider--height"></span></label>
+            <input type="range" id="input-height" name="height" min="1" max="100" value="15" data-rangeslider>
+            <input type="submit" value="Create" class="create-button">
+            <input type="button" value="Reset" class="reset-button">
+          </form>
+        </div>
+        <!-- color tools -->
+        <div class="toolbox">
+          <div id="color-grid">
+            <label for="color-picker">Pixel Color</label>
+            <label for="grid-picker">Grid Color</label>
+            <input type='text' class="color-picker" />
+            <input type='text' class="grid-picker" value="e1e1e6"/>
+          </div>
+          <label for="swatches">Swatches</label>
+          <div id="swatch-container">
+            <div id="red-swatch" class="swatches"></div>
+            <div id="orange-swatch" class="swatches"></div>
+            <div id="yellow-swatch" class="swatches"></div>
+            <div id="green-swatch" class="swatches"></div>
+            <div id="blue-swatch" class="swatches"></div>
+            <div id="violet-swatch" class="swatches"></div>
+          </div>
+        </div>
+        <!-- drawing tools -->
+        <div class="toolbox">
+          <label for="Drawing Tools">Drawing Tools</label>
+          <div id="drawing-tools">
+            <!-- download button -->
+            <svg id = "download" class="inactive" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105.5 98.7">
+              <path class="st0" d="M85.3 29.1C83 20.4 75 14 65.7 14c-1.3 0-2.7 0.1-4 0.4C58.2 5.8 49.8 0 40.3 0 28.1 0 18 9.6 17.3 21.6 7.1 24.8 0 34.3 0 45.2c0 13.6 11.1 24.7 24.7 24.7h8.6c1.7 0 3.1-1.4 3.1-3.1s-1.4-3.1-3.1-3.1h-8.6c-10.2 0-18.5-8.3-18.5-18.5 0-8.8 6.2-16.4 14.9-18.1 1.5-0.3 2.5-1.6 2.5-3.2 0-0.1 0-0.3 0-0.4 0-0.1 0-0.3 0-0.4 0-9.3 7.6-16.9 16.9-16.9 7.8 0 14.5 5.3 16.4 12.8 0.2 0.8 0.8 1.6 1.5 2 0.8 0.4 1.7 0.5 2.5 0.2 1.6-0.6 3.3-0.9 4.9-0.9 7.2 0 13.3 5.4 14.1 12.6 0.1 0.8 0.5 1.6 1.2 2.1 0.6 0.5 1.5 0.7 2.3 0.6 0.7-0.1 1.3-0.1 1.9-0.1 7.8 0 14.2 6.4 14.2 14.2 0 7.8-6.4 14.2-14.2 14.2l-12.9 0c-1.7 0-3.1 1.4-3.1 3.1 0 1.7 1.4 3.1 3.1 3.1l12.9 0c11.2 0 20.3-9.1 20.3-20.3C105.5 38.3 96.4 29.3 85.3 29.1z M65.7 78.3l-9.9 9.9V46c0-1.7-1.4-3.1-3.1-3.1 -1.7 0-3.1 1.4-3.1 3.1v42.2l-9.9-9.9c-1.2-1.2-3.1-1.2-4.3 0 -1.2 1.2-1.2 3.1 0 4.3l15.1 15.1c0.1 0.1 0.8 0.9 2.2 0.9 1.3 0 2.1-0.8 2.2-0.9L70 82.7c1.2-1.2 1.2-3.1 0-4.3C68.8 77.1 66.9 77.1 65.7 78.3z"/>
+            </svg>
+            <!-- eyedropper button -->
+            <svg id="eyedropper" class="inactive" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98.8 98.7">
+              <path class="eyedropper-icon" d="M94.8 4.1C92.2 1.5 88.7 0 84.9 0c-4 0-8 1.7-10.9 4.6L60.2 18.4l-0.8-0.8c-2.6-2.5-7.2-2.5-9.7 0.1l-8.1 8.1c-0.6 0.6-0.9 1.3-0.9 2.1s0.3 1.5 0.9 2.1l2 2 -33 33c-2.7 2.7-5.5 6.9-6.4 9.5l-1.4 4.3L0.1 89.6c-0.3 1 0 2.1 0.8 2.8l5.4 5.4c0.5 0.5 1.3 0.9 2.1 0.9 0.3 0 0.6-0.1 0.9-0.2l12.2-4.1c2.7-0.9 6.8-3.7 9.5-6.4l34.3-34.3 3.3 3.3c0.6 0.6 1.3 0.9 2.1 0.9 0.8 0 1.5-0.3 2.1-0.9L81 49c1.3-1.3 2-3 2-4.8 0-1.8-0.7-3.5-2-4.8l-0.6-0.6L94.1 25C100 19.1 100.3 9.7 94.8 4.1zM61.2 49.6L26.9 83.9c-2.3 2.3-5.6 4.4-7.2 5L9.2 92.4l-3-3 2.2-9 1.4-4.1c0.5-1.6 2.7-5 5-7.2l33-33L61.2 49.6zM73.3 38.7c0 0.8 0.3 1.5 0.9 2.1l2.7 2.7c0.2 0.2 0.3 0.5 0.3 0.6s0 0.4-0.3 0.6l-6.1 6.1 -23-23 6.1-6.1c0.2-0.2 0.5-0.3 0.7-0.3 0.2 0 0.5 0 0.8 0.3l2.9 2.7c1.2 1.1 3 1.1 4.1-0.1L78.2 8.7C79.9 7 82.4 6 85 6c2.2 0 4.2 0.8 5.6 2.2 3.3 3.3 3 9-0.6 12.6L74.2 36.7C73.6 37.2 73.3 38 73.3 38.7z"/>
+            </svg>
+            <!-- eraser button -->
+            <svg id="eraser" class="inactive" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112.3 100.8">
+            	<path class="eraser-icon" d="M112.3 40.3c0-3.3-1.3-6.3-3.6-8.6L80.6 3.6C78.3 1.3 75.3 0 72 0c-3.3 0-6.3 1.3-8.6 3.6L3.6 63.4c-4.8 4.8-4.8 12.5 0 17.3l20.1 20.1 9 0c0 0 0 0 0.1 0H101c1.8 0 3.2-1.4 3.2-3.2s-1.4-3.2-3.2-3.2H63.3l45.4-45.5C111 46.6 112.3 43.6 112.3 40.3zM54.3 94.4H32.7c-0.1 0-0.2 0-0.3 0h-6.1L8 76.2c-2.3-2.3-2.3-6 0-8.3l29-29 36.6 36.2L54.3 94.4zM104.3 44.5L78.1 70.6 41.5 34.4 67.8 8c1.1-1.1 2.6-1.7 4.2-1.7 1.6 0 3.1 0.6 4.2 1.7l28.1 28.1c1.1 1.1 1.7 2.6 1.7 4.2C106 41.9 105.4 43.4 104.3 44.5z"/></svg>
+            </svg>
+            <!-- pencil button -->
+            <svg id="pencil" class="inactive" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 99.5 98.7">
+              <path class="pencil-icon" d="M97.5 16.3L83.2 2.1C81.8 0.7 80 0 78.2 0c-1.8 0-3.6 0.7-5 2.1l-4.5 4.4 0 0L15.1 60.2c-0.3 0.3-0.5 0.6-0.7 1L0.2 94.4c-0.5 1.1-0.2 2.5 0.6 3.4 0.6 0.6 1.4 0.9 2.2 0.9 0.4 0 0.7-0.1 1.1-0.2l32.9-12.6c0.4-0.2 0.8-0.4 1.1-0.7l54.4-54 0 0 4.8-4.9C100.2 23.6 100.2 19.1 97.5 16.3zM78.2 6.2c0.2 0 0.4 0 0.6 0.3l14.3 14.3c0.2 0.2 0.3 0.5 0.3 0.6 0 0.2 0 0.4-0.3 0.6l-2.7 2.7 -3.6 3.6L71.2 12.8l3.5-3.5 0 0 2.9-2.9C77.8 6.2 78 6.2 78.2 6.2zM15.7 87.4l-4.1-4.1 7.5-17.5 14.6 14.6L15.7 87.4zM32.8 70.8l-4.4-4.4L23 61l43.8-43.9 5.8 5.8 -35 35.3c-1 1-1 2.7 0 3.7 0.5 0.5 1.2 0.8 1.9 0.8 0.7 0 1.4-0.3 1.9-0.8l35-35.3 5.9 5.9L38.3 76.3 32.8 70.8z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end sidebar -->
+    <!-- canvas -->
+    <div id="art-board">
+      <div id="canvas-container">
+        <table id="pixel-canvas"></table>
+      </div>
+    </div>
+  </div>
+  <!-- end main content -->
+
+  <script type="text/javascript" src="http://bgrins.github.com/spectrum/spectrum.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.0/rangeslider.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+  <script src="designs.js"></script>
+</body>
+</html>
