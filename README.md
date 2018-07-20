@@ -1,4 +1,4 @@
-# Pixel Art Maker 2.0
+# Pixel Art Maker
 
 ## Overview
 
