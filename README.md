@@ -2,7 +2,7 @@
 
 ## Overview
 
-Create your very own 8-bit masterpiece with Pixel Art Maker 2.0!
+Create your very own 8-bit masterpiece with Pixel Art Maker!
 
 ## Setup
 
