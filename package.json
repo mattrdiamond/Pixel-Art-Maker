@@ -1,0 +1,19 @@
+{
+  "name": "pixelartmaker",
+  "version": "1.0.0",
+  "description": "## Overview",
+  "main": "designs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattrdiamond/Pixel-Art-Maker.git"
+  },
+  "homepage": "https://github.com/mattrdiamond/Pixel-Art-Maker#readme",
+  "dependencies": {
+    "html2canvas": "^1.0.0-rc.3",
+    "rangeslider-js": "^3.2.5",
+    "spectrum-colorpicker": "^1.8.0"
+  }
+}
