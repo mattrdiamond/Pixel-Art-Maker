@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "html2canvas": "^1.0.0-rc.3",
+    "jquery": "^3.4.1",
     "rangeslider-js": "^3.2.5",
     "spectrum-colorpicker": "^1.8.0"
   }
