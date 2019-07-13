@@ -2,7 +2,7 @@
 
 Create your very own 8-bit masterpiece with Pixel Art Maker!
 
-![Screenshot of Pixel Art Maker](img/PixelArtMaker_screenshot.png)
+![Screenshot of Pixel Art Maker](img/PixelArtMaker_screenshot2.png)
 
 👉 Check out the [live version](https://mattrdiamond.github.io/Pixel-Art-Maker/) or follow setup instructions below to run locally.
 
