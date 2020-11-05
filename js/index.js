@@ -1,425 +1,299 @@
-let drawMode = false;
-let eraseMode = false;
-let eyedropperMode = false;
-let downloadMode = false;
-let mouseDragging = false;
-const colorPicker = $(".color-picker");
-const gridPicker = $(".grid-picker");
-const eraserTool = $("#eraser");
-const pencilTool = $("#pencil");
-const eyedropperTool = $("#eyedropper");
-const downloadTool = $("#download");
-const table = $("#pixel-canvas");
-const canvas = $("#canvas-container");
-const inputWidth = $("#input-width");
-const inputHeight = $("#input-height");
-const modalDownload = $(".modal-download");
-const modalError = $(".modal-error");
-const modalGridMax = $(".modal-grid-max");
-const gridMaxAlert = $(".grid-max-alert");
+$(function () {
+  let activeTool = null;
+  let activeModal = null;
+  let mouseDragging = false;
+  const $colorPicker = $(".color-picker");
+  const $gridPicker = $(".grid-picker");
+  const $table = $("#pixel-canvas");
+  const $canvas = $("#canvas-container");
+  const $inputWidth = $("#input-width");
+  const $inputHeight = $("#input-height");
+  const $gridMaxAlert = $(".grid-max-alert");
+  const $sidebarContainer = $(".sidebar-container");
+  const $flyoutIcon = $(".flyout-icon");
 
-/*-----------------------
- * event listeners
- *---------------------*/
+  // get max number of pixels that will fit on screen (limit 100)
+  function calculateMaxGrid() {
+    const pixelSize = 20,
+      limit = 100;
+    let maxGridHeight = Math.floor($canvas.height() / pixelSize);
+    let maxGridWidth = Math.floor($canvas.width() / pixelSize);
 
-//submit grid
-$("#size-picker").submit(function(evt) {
-  evt.preventDefault();
-  checkCanvasDimensions();
-});
-
-//reset grid
-$(".reset-button").on("click", function() {
-  resetTable();
-});
-
-// single click or click and drag to paint
-table.on("click", "td", function(evt) {
-  // collapse sidebar on small screens
-  collapseSidebar();
-
-  if (drawMode || eraseMode) {
-    paintPixels(evt);
+    return {
+      maxHeight: maxGridHeight < limit ? maxGridHeight : limit,
+      maxWidth: maxGridWidth < limit ? maxGridWidth : limit,
+    };
   }
-  if (eyedropperMode) {
-    getColorValue(evt);
-    activatePencil();
+
+  function openModal(modal) {
+    $("#" + modal).fadeIn(250);
+    activeModal = modal;
   }
-});
 
-table.on("mousedown", "td", function() {
-  mouseDragging = true;
-});
+  function closeModal() {
+    $("#" + activeModal).fadeOut(250);
+    activeModal = null;
+  }
 
-table.on("mousemove mouseover mouseenter", "td", function(evt) {
-  if ((mouseDragging && drawMode) || (mouseDragging && eraseMode)) {
+  function getGridSize() {
+    const { maxHeight, maxWidth } = calculateMaxGrid();
+    let sliderHeight = $("#input-height").val();
+    let sliderWidth = $("#input-width").val();
+
+    //check to see if screen size can accomodate user input value
+    if (sliderHeight > maxHeight || sliderWidth > maxWidth) {
+      $gridMaxAlert.append(
+        `Maximum grid size is ${maxWidth} pixels wide by ${maxHeight} pixels high.`
+      );
+      openModal("modal-grid-error");
+    }
+    return {
+      height: sliderHeight,
+      width: sliderWidth,
+    };
+  }
+
+  function resetTable() {
+    $table.empty();
+  }
+
+  function makeGrid(height, width) {
+    const tbody = document.createElement("tbody");
+    resetTable();
+    for (let i = 0; i < height; i++) {
+      const row = tbody.insertRow(i);
+      for (let j = 0; j < width; j++) {
+        row.insertCell(j);
+      }
+    }
+    $table.append(tbody);
+  }
+
+  function activateTool(clickedTool) {
+    if (activeTool && clickedTool === activeTool) return;
+
+    if (activeTool) {
+      $("#" + activeTool).removeClass("active");
+    }
+
+    $("#" + clickedTool).addClass("active");
+    activeTool = clickedTool;
+
+    if (activeTool === "download") {
+      // only download if table is present
+      return $table.children().length > 0
+        ? openModal("modal-download")
+        : openModal("modal-download-error");
+    } else if ($table) {
+      $table.attr("class", activeTool + "-active");
+    }
+  }
+
+  // apply color to cells to draw or erase
+  function paintPixels(e) {
+    let color;
+    if (activeTool === "eraser") {
+      color = "#ffffff";
+    } else {
+      color = $colorPicker.spectrum("get").toHexString();
+    }
+    $(e.target).css("background", color);
+  }
+
+  function setGridColor() {
+    const color = $gridPicker.spectrum("get").toHexString();
+    $("td").css("border-color", color);
+  }
+
+  //download a png of the table
+  function saveImage() {
+    html2canvas($canvas, {
+      onrendered: function (canvas) {
+        const dummylink = document.createElement("a");
+        $(dummylink).attr("href", canvas.toDataURL("image/png"));
+        $(dummylink).attr("download", "masterpiece.png");
+        $(dummylink)[0].click();
+      },
+    });
+  }
+
+  function collapseSidebar() {
+    if (window.innerWidth > 700 && !$sidebarContainer.hasClass("flyout"))
+      return;
+    $sidebarContainer.removeClass("flyout");
+    $flyoutIcon.removeClass("open");
+  }
+
+  function handleResize() {
+    const { maxHeight, maxWidth } = calculateMaxGrid();
+
+    // update max attribute based on new screen size
+    $inputHeight.attr("max", maxHeight);
+    $inputWidth.attr("max", maxWidth);
+
+    // set slider values to max amount
+    $inputHeight.val(maxHeight).change();
+    $inputWidth.val(maxWidth).change();
+
+    // update range slider UI accordingly
+    $inputHeight.rangeslider("update", true);
+    $inputWidth.rangeslider("update", true);
+
     collapseSidebar();
-    paintPixels(evt);
-  }
-  if (eyedropperMode) {
-    $(this).addClass("eyedropper-mode");
-    $(this).removeClass("draw-mode");
-  } else {
-    $(this).addClass("draw-mode");
-    $(this).removeClass("eyedropper-mode");
-  }
-});
-
-//change cursor for eyedropper tool
-table.on("mousemove mouseover mouseenter", function(evt) {
-  if (eyedropperMode) {
-    $(this).css("cursor", "pointer");
-  } else {
-    $(this).css("cursor", "crosshair");
-  }
-});
-
-// when mouse is released, dragging has stopped
-$(document).on("mouseup mouseleave dragstart", function() {
-  mouseDragging = false;
-});
-
-// double click to erase
-table.dblclick(function(evt) {
-  const color = colorPicker.spectrum("get").toHexString();
-  $(evt.target).css("background-color", "#fff");
-});
-
-// activate/deactivate pencil tool
-pencilTool.click(function() {
-  if ($(this).attr("class") === "active") {
-    $(this).attr("class", "inactive");
-    drawMode = false;
-  } else {
-    activatePencil();
-  }
-});
-
-// activate/deactivate eraser tool
-eraserTool.click(function() {
-  if ($(this).attr("class") === "active") {
-    $(this).attr("class", "inactive");
-    eraseMode = false;
-    drawMode = false;
-    eyedropperMode = false;
-    downloadMode = false;
-  } else {
-    $(this).attr("class", "active");
-    pencilTool.attr("class", "inactive");
-    eyedropperTool.attr("class", "inactive");
-    downloadTool.attr("class", "inactive");
-    eraseMode = true;
-    drawMode = false;
-    eyedropperMode = false;
-    downloadMode = false;
-  }
-});
-
-// activate/deactivate eyedropper tool
-eyedropperTool.click(function() {
-  if ($(this).attr("class") === "active") {
-    $(this).attr("class", "inactive");
-    eraseMode = false;
-    drawMode = false;
-    eyedropperMode = false;
-    downloadMode = false;
-  } else {
-    $(this).attr("class", "active");
-    pencilTool.attr("class", "inactive");
-    eraserTool.attr("class", "inactive");
-    downloadTool.attr("class", "inactive");
-    eyedropperMode = true;
-    eraseMode = false;
-    drawMode = false;
-    downloadMode = false;
-  }
-});
-
-// activate/deactivate download button
-downloadTool.click(function() {
-  if (table.children().length > 0) {
-    $(this).attr("class", "active");
-    pencilTool.attr("class", "inactive");
-    eraserTool.attr("class", "inactive");
-    eyedropperTool.attr("class", "inactive");
-    downloadMode = true;
-    eyedropperMode = false;
-    eraseMode = false;
-    drawMode = false;
-    downloadPrompt();
-  } else {
-    downloadError();
-  }
-});
-
-//modal: download image
-$(".modal-submit").click(function() {
-  modalDownload.fadeOut(500);
-  saveImage();
-  activatePencil();
-});
-
-//modal: cancel button
-$(".modal-cancel").click(function() {
-  modalDownload.fadeOut(500);
-  modalError.fadeOut(500);
-  modalGridMax.fadeOut(500);
-  // clear modal alert text after alert fades out
-  setTimeout(clearModalText, 1000);
-  function clearModalText() {
-    gridMaxAlert.empty();
-  }
-  activatePencil();
-});
-
-//change drawing color to swatch value
-$("#swatch-container").on("click", ".swatches", function() {
-  switch ($(this).attr("id")) {
-    case "red-swatch":
-      colorPicker.spectrum("set", "#fd566a");
-      break;
-    case "orange-swatch":
-      colorPicker.spectrum("set", "#feaa19");
-      break;
-    case "yellow-swatch":
-      colorPicker.spectrum("set", "#fffd33");
-      break;
-    case "green-swatch":
-      colorPicker.spectrum("set", "#97eb71");
-      break;
-    case "blue-swatch":
-      colorPicker.spectrum("set", "#47d0d0");
-      break;
-    case "violet-swatch":
-      colorPicker.spectrum("set", "#a972dd");
-      break;
-  }
-});
-
-//respond to user resizing window
-$(window).resize(function() {
-  const availHeight = canvas.height();
-  const availWidth = canvas.width();
-  const resizeHeight = Math.floor(canvas.height() / 20);
-  const resizeWidth = Math.floor(canvas.width() / 20);
-
-  inputHeight.val(resizeHeight);
-  inputWidth.val(resizeWidth);
-
-  //update range sliders when resizing window
-  inputHeight.rangeslider("update", true);
-  inputWidth.rangeslider("update", true);
-
-  //collapse sidebar on smaller screens
-  if ($(window).width() <= 700) {
-    $(".sidebar-container").removeClass("flyout");
-    $(".flyout-icon").removeClass("open");
-  }
-});
-
-//flyout sidebar activation using hamburger button
-$(".flyout-icon").click(function() {
-  $(this).toggleClass("open");
-  $(".sidebar-container").toggleClass("flyout");
-});
-
-/*-----------------------
- * functions
- *---------------------*/
-
-//check canvas dimensions
-function checkCanvasDimensions() {
-  let canvasHeight = canvas.height();
-  let canvasWidth = canvas.width();
-  let availableHeight = Math.floor(canvasHeight / 20);
-  let availableWidth = Math.floor(canvasWidth / 20);
-  const gridHeight = $("#input-height").val();
-  const gridWidth = $("#input-width").val();
-
-  /*-------------------*/
-  console.log(`canvas height is ${canvasHeight}`);
-  console.log(`canvas width is ${canvasWidth}`);
-  console.log(`available Height is ${availableHeight}`);
-  console.log(`available Width is ${availableWidth}`);
-  console.log(`grid height is ${gridHeight}`);
-  console.log(`grid width is ${gridWidth}`);
-  /*-------------------*/
-
-  //set available height/width to 100 for large screen sizes
-  if (availableHeight > 100) {
-    availableHeight = 100;
-  }
-  if (availableWidth > 100) {
-    availableWidth = 100;
   }
 
-  //check to see if screen size can accomodate user input value before creating grid
-  if (availableHeight >= gridHeight && availableWidth >= gridWidth) {
-    makeGrid();
+  /*-----------------------
+   * spectrum color picker
+   *---------------------*/
+
+  // set default pixel color
+  $colorPicker.spectrum({
+    color: "#a972dd",
+  });
+
+  $gridPicker.spectrum({
+    show: function () {
+      $(this).data("changed", false);
+    },
+    change: function () {
+      $(this).data("changed", true);
+    },
+    move: function () {
+      $(this).data("changed", true);
+    },
+    hide: function (color) {
+      if ($(this).data("changed")) {
+        $("td").css("border-color", color.toHexString());
+      }
+    },
+  });
+
+  /*-----------------------
+   * range sliders
+   *---------------------*/
+
+  $(function initSliders() {
+    $inputWidth.rangeslider({
+      polyfill: false,
+      // update text value when slider value changes
+      onSlide: function (position, value) {
+        $(".rangeslider--width").text(value);
+      },
+    });
+    $("#input-height").rangeslider({
+      polyfill: false,
+      onSlide: function (position, value) {
+        $(".rangeslider--height").text(value);
+      },
+    });
+    // set default grid size to fill entire canvas
+    handleResize();
+  });
+
+  /*-----------------------
+   * events
+   *---------------------*/
+
+  //submit grid
+  $("#size-picker").on("submit", function (e) {
+    e.preventDefault();
+    const { height, width } = getGridSize();
+    if (!height || !width) return;
+    makeGrid(height, width);
     setGridColor();
-    activatePencil();
-  } else {
-    gridMaxAlert.append(
-      `Maximum grid size is ${availableWidth} pixels wide by ${availableHeight} pixels high.`
-    );
-    modalGridMax.fadeIn(500);
-  }
-}
+    activateTool("pencil");
+  });
 
-// create grid
-function makeGrid() {
-  const gridHeight = $("#input-height").val();
-  const gridWidth = $("#input-width").val();
-  const tbody = document.createElement("tbody");
+  //reset grid
+  $(".reset-button").on("click", function () {
+    resetTable();
+  });
 
-  resetTable();
-  //old--------------------------------------------
-  //   for(let i = 0; i < gridHeight; i++) {
-  //     const row = $("<tr></tr>");
-  //     for(let j = 0; j < gridWidth; j++) {
-  //       const cell = $("<td></td>");
-  //       row.append(cell);
-  //     }
-  //     table.append(row);
-  //   }
-  // }
-  // ------------------------------------------------
-  for (let i = 0; i < gridHeight; i++) {
-    const row = tbody.insertRow(i);
-    for (let j = 0; j < gridWidth; j++) {
-      const cell = row.insertCell(j);
-    }
-  }
-  table.append(tbody);
-}
-
-// reset table
-function resetTable() {
-  table.empty();
-}
-
-// activate pencil tool
-function activatePencil() {
-  if (
-    eraserTool.attr("class", "active") ||
-    eyedropperTool.attr("class", "active") ||
-    downloadTool.attr("class", "active")
-  ) {
-    eraserTool.attr("class", "inactive");
-    eyedropperTool.attr("class", "inactive");
-    downloadTool.attr("class", "inactive");
-    eraseMode = false;
-    eyedropperMode = false;
-  }
-  pencilTool.attr("class", "active");
-  drawMode = true;
-}
-
-// apply color to cells to draw or erase
-function paintPixels(evt) {
-  let color;
-  if (eraseMode) {
-    color = "#ffffff";
-  } else {
-    color = colorPicker.spectrum("get").toHexString();
-  }
-  $(evt.target).css("background", color);
-}
-
-//change grid color
-function setGridColor() {
-  const color = gridPicker.spectrum("get").toHexString();
-  $("td").css("border-color", color);
-}
-
-//eyedropper tool - get color value
-function getColorValue(evt) {
-  const eyedropperValue = $(evt.target).css("background-color");
-  colorPicker.spectrum("set", eyedropperValue);
-}
-
-// prompt user to download png of file
-function downloadPrompt() {
-  modalDownload.fadeIn(500);
-}
-
-//download a png of the table
-function saveImage() {
-  html2canvas(canvas, {
-    onrendered: function(canvas) {
-      const dummylink = document.createElement("a");
-      $(dummylink).attr("href", canvas.toDataURL("image/png"));
-      $(dummylink).attr("download", "masterpiece.png");
-      $(dummylink)[0].click();
+  // single click or click and drag to paint
+  $table.on("click", "td", function (e) {
+    if (activeTool === "pencil" || activeTool === "eraser") {
+      paintPixels(e);
+    } else if (activeTool === "eyedropper") {
+      const eyedropperValue = $(e.target).css("background-color");
+      $colorPicker.spectrum("set", eyedropperValue);
+      activateTool("pencil");
     }
   });
-}
 
-//hide sidebar when clicking on table (small screen sizes only)
-function collapseSidebar() {
-  const sidebar = $(".sidebar-container");
-  const flyoutIcon = $(".flyout-icon");
+  $table.on("mousedown", "td", function () {
+    mouseDragging = true;
+    collapseSidebar();
+  });
 
-  if (sidebar.hasClass("flyout")) {
-    sidebar.toggleClass("flyout");
-    flyoutIcon.toggleClass("open");
-  }
-}
-
-// error modal if user clicks download without creating a grid first
-function downloadError() {
-  modalError.fadeIn(500);
-}
-
-/*-----------------------
- * spectrum color picker
- *---------------------*/
-colorPicker.spectrum({
-  color: "#a972dd"
-});
-
-gridPicker.spectrum({
-  show: function() {
-    $(this).data("changed", false);
-  },
-  change: function(color) {
-    $(this).data("changed", true);
-  },
-  move: function(color) {
-    $(this).data("changed", true);
-  },
-  hide: function(color) {
-    if ($(this).data("changed")) {
-      $("td").css("border-color", color.toHexString());
-    }
-  }
-});
-
-/*-----------------------
- * range sliders
- *---------------------*/
-
-$(function() {
-  //set default grid size to fill entire canvas
-  inputHeight.val(Math.floor(canvas.height() / 20));
-  inputWidth.val(Math.floor(canvas.width() / 20));
-
-  $("#input-width").rangeslider({
-    polyfill: false,
-    onInit: function() {
-      $(".rangeslider--width").text($("#input-width").val());
-    },
-    onSlide: function(position, value) {
-      $(".rangeslider--width").text(value);
+  $table.on("mousemove mouseover mouseenter", "td", function (e) {
+    if (mouseDragging && (activeTool === "pencil" || activeTool === "eraser")) {
+      paintPixels(e);
     }
   });
-  $("#input-height").rangeslider({
-    polyfill: false,
-    onInit: function() {
-      $(".rangeslider--height").text($("#input-height").val());
-    },
-    onSlide: function(position, value) {
-      $(".rangeslider--height").text(value);
+
+  // when mouse is released, dragging has stopped
+  $(document).on("mouseup mouseleave dragstart", function () {
+    mouseDragging = false;
+  });
+
+  // double click to erase
+  $table.dblclick(function (e) {
+    $(e.target).css("background-color", "#fff");
+  });
+
+  //change drawing color to swatch value
+  $("#swatch-container").on("click", ".swatches", function () {
+    switch ($(this).attr("id")) {
+      case "red-swatch":
+        $colorPicker.spectrum("set", "#fd566a");
+        break;
+      case "orange-swatch":
+        $colorPicker.spectrum("set", "#feaa19");
+        break;
+      case "yellow-swatch":
+        $colorPicker.spectrum("set", "#fffd33");
+        break;
+      case "green-swatch":
+        $colorPicker.spectrum("set", "#97eb71");
+        break;
+      case "blue-swatch":
+        $colorPicker.spectrum("set", "#47d0d0");
+        break;
+      case "violet-swatch":
+        $colorPicker.spectrum("set", "#a972dd");
+        break;
     }
+  });
+
+  // activate drawing tool
+  $("#drawing-tools").on("click", "svg", (e) => {
+    const clickedTool = e.target.id;
+    activateTool(clickedTool);
+  });
+
+  //flyout sidebar activation using hamburger button
+  $flyoutIcon.on("click", function () {
+    $(this).toggleClass("open");
+    $sidebarContainer.toggleClass("flyout");
+  });
+
+  // window resize handler
+  $(window).on("resize", $.debounce(400, handleResize));
+
+  $(".modal-submit").on("click", function () {
+    if (activeModal === "modal-download") {
+      saveImage();
+      activateTool("pencil");
+    }
+    closeModal();
+  });
+
+  $(".modal-cancel").on("click", function () {
+    if (activeModal === "modal-grid-error") {
+      // clear modal alert text after alert fades out
+      setTimeout($gridMaxAlert.empty(), 500);
+    }
+    closeModal();
+    activateTool("pencil");
   });
 });

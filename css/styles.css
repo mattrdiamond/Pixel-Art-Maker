@@ -73,7 +73,7 @@ input[type="button"] {
   margin-top: 1.5rem;
   padding: 10px 0;
   text-transform: uppercase;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   -webkit-appearance: none;
   width: 95px;
 }
@@ -90,7 +90,7 @@ input[type="button"]:active {
 input[type="image"] {
   border: 2px solid transparent;
   border-radius: 5px;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 
 label {
@@ -98,27 +98,8 @@ label {
   margin-bottom: 1rem;
 }
 
-table {
-  align-self: center;
-  border-collapse: collapse;
-  /* cursor: crosshair; */
-  margin: 0 auto;
-}
-tr {
-  height: 20px;
-}
-td {
-  background: white;
-  border: 1px solid var(--ui-lightest);
-  box-sizing: border-box;
-  /* cursor: crosshair; */
-  width: 20px;
-}
-.eyedropper-mode:hover {
-  box-shadow: inset 0px 0px 0px 4px rgba(41, 42, 65, 0.6);
-}
-.draw-mode:hover {
-  box-shadow: inset 0px 0px 0px 10px rgba(0, 0, 0, 0.15);
+path {
+  pointer-events: none;
 }
 
 /*-------------------
@@ -144,14 +125,6 @@ td {
   grid-row-gap: 10px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 18px 1fr;
-}
-
-#drawing-tools {
-  align-items: center;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
 }
 
 #main-container {
@@ -197,33 +170,59 @@ td {
 /*-------------------
  * main styles
  *-----------------*/
-.active {
-  /* !important tag used to override border for active state */
-  border: 2px solid var(--accent-color) !important;
-  fill: var(--accent-color);
+#pixel-canvas {
+  align-self: center;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+#pixel-canvas tr {
+  height: 20px;
+}
+#pixel-canvas td {
+  background: white;
+  border: 1px solid var(--ui-lightest);
+  box-sizing: border-box;
+  width: 20px;
+}
+#pixel-canvas.eyedropper-active:hover {
+  cursor: pointer;
+}
+#pixel-canvas.eyedropper-active td:hover {
+  box-shadow: inset 0px 0px 0px 4px rgba(41, 42, 65, 0.6);
+}
+#pixel-canvas.pencil-active:hover {
+  cursor: cell;
+}
+#pixel-canvas.pencil-active td:hover {
+  box-shadow: inset 0px 0px 0px 10px rgba(0, 0, 0, 0.15);
 }
 
-#eyedropper,
-#eraser,
-#pencil,
-#download {
+#drawing-tools {
+  align-items: center;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#drawing-tools svg {
   border: 2px solid transparent;
   border-radius: 5px;
   cursor: pointer;
   height: 25px;
   padding: 8px;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   width: 28px;
+  fill: var(--ui-light);
 }
-#eyedropper:hover,
-#eraser:hover,
-#pencil:hover,
-#download:hover {
+
+#drawing-tools svg:hover {
   fill: var(--accent-color);
 }
 
-.inactive {
-  fill: var(--ui-light);
+#drawing-tools svg.active {
+  border: 2px solid var(--accent-color);
+  fill: var(--accent-color);
 }
 
 .logo-plus {
@@ -284,6 +283,8 @@ td {
   color: var(--ui-medium);
   height: 42px;
   margin-top: 2.25rem;
+  font-size: 14px;
+  line-height: 1;
 }
 .modal-button-container input[type="button"]:hover {
   background-color: var(--accent-color);
@@ -372,7 +373,7 @@ td {
   border-radius: 3px;
   cursor: pointer;
   height: 100%;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   width: 12%;
 }
 .swatches:hover {
@@ -583,7 +584,7 @@ td {
   margin-top: -14px;
   position: absolute;
   top: 50%;
-  transition: background 0.5s ease;
+  transition: background-color 0.3s ease;
   width: 16px;
 }
 .rangeslider__handle:active,
@@ -613,6 +614,7 @@ td {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-direction: row-reverse;
 }
 
 .sp-cancel {
@@ -624,9 +626,8 @@ td {
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 1.2px;
-  margin-right: 1.5rem;
   padding: 10.5px 19px;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   text-align: center;
 }
 .sp-cancel:hover {
@@ -634,6 +635,10 @@ td {
   color: var(--ui-medium) !important;
   /* important tag used to override external stylesheet that uses important tag */
   text-decoration: none;
+}
+
+.sp-choose {
+  margin-right: 1.5rem;
 }
 
 .sp-container,
@@ -678,7 +683,7 @@ td {
   letter-spacing: 1.2px;
   padding: 12px 19px;
   text-shadow: none;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 .sp-container button:hover {
   background-color: var(--ui-lightest);
@@ -707,14 +712,14 @@ td {
   cursor: pointer;
   height: 42px;
   margin-right: 0;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   width: 96px;
 }
 
 .sp-preview-inner {
   border-radius: 5px;
   cursor: pointer;
-  transition: all 0.5s ease;
+  transition: background-color 0.3s ease;
 }
 
 .sp-replacer {
@@ -725,18 +730,17 @@ td {
   height: 42px;
   margin-bottom: 1rem;
   padding: 0;
-  transition: all 0.5s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .sp-replacer-inner {
   border-radius: 5px;
   cursor: pointer;
-  transition: all 0.5s ease;
+  transition: background-color 0.3s ease;
 }
 
 .sp-replacer:hover,
-.sp-preview:hover,
-.sp-preview-inner:hover {
+.sp-preview:hover {
   opacity: 0.9;
   transform: scale(1.04);
 }
@@ -751,6 +755,7 @@ td {
   position: absolute;
   transition: all 0.5s ease;
   width: 50px;
+  position: fixed;
 }
 
 .flyout-icon {
