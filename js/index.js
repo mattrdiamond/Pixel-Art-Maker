@@ -220,8 +220,10 @@ $(function () {
     }
   });
 
-  $table.on("mousedown", "td", function () {
+  $table.on("mousedown", "td", function (e) {
     mouseDragging = true;
+    // disable drag and drop
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     collapseSidebar();
   });
 
