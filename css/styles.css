@@ -273,6 +273,11 @@ path {
   width: 90px;
 }
 
+.logo {
+  max-width: 75%;
+  margin-bottom: 1.5rem;
+}
+
 .modal-button-container {
   display: flex;
   justify-content: center;
@@ -416,6 +421,17 @@ path {
 
 .svg-accent {
   fill: var(--accent-color);
+}
+
+.svg-accent-stroke {
+  fill: none;
+  stroke-width: 1.837;
+  stroke: var(--accent-color);
+}
+.svg-accent-stroke1 {
+  fill: none;
+  stroke-width: 1.837;
+  stroke: red;
 }
 
 /*-------------------
