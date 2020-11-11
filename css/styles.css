@@ -15,6 +15,7 @@
   --green-swatch: #97eb71;
   --blue-swatch: #47d0d0;
   --violet-swatch: #a972dd;
+  --column-gap: 18px;
 }
 
 /*-------------------
@@ -75,7 +76,7 @@ input[type="button"] {
   text-transform: uppercase;
   transition: all 0.3s ease;
   -webkit-appearance: none;
-  width: 95px;
+  width: calc(50% - (var(--column-gap) / 2));
 }
 input[type="submit"]:hover,
 input[type="submit"]:active,
@@ -121,7 +122,7 @@ path {
 
 #color-grid {
   display: grid;
-  grid-column-gap: 8.5%;
+  grid-column-gap: var(--column-gap);
   grid-row-gap: 10px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 18px 1fr;
@@ -140,6 +141,7 @@ path {
   color: var(--ui-light);
   padding: 3rem;
   transition: all 0.5s ease;
+  position: relative;
 }
 
 .sidebar-container {
@@ -212,8 +214,11 @@ path {
   height: 25px;
   padding: 8px;
   transition: all 0.3s ease;
-  width: 28px;
+  width: 23%;
   fill: var(--ui-light);
+  box-sizing: border-box;
+  height: 45px;
+  max-width: 50px;
 }
 
 #drawing-tools svg:hover {
@@ -240,8 +245,9 @@ path {
   height: 30px;
   justify-content: center;
   left: 129px;
-  margin-left: 99px;
+  top: 3.1rem;
   width: 30px;
+  position: absolute;
 }
 .logo-plus .plus {
   animation: plus-opacity 2s infinite ease-in-out;
@@ -252,9 +258,6 @@ path {
   width: 56%;
 }
 
-.logo-title {
-  margin-top: -39px;
-}
 .logo-title h1 {
   align-items: end;
   border: 4px solid var(--accent-color);
@@ -713,7 +716,7 @@ path {
   height: 42px;
   margin-right: 0;
   transition: all 0.3s ease;
-  width: 96px;
+  width: 100%;
 }
 
 .sp-preview-inner {
@@ -807,10 +810,10 @@ path {
 }
 
 /*-------------------
- * media queries
+ * mobile styles
  *-----------------*/
 
-@media only screen and (max-width: 700px) {
+@media (max-width: 700px) {
   .sidebar-container {
     margin-left: -250px;
     z-index: 1;
@@ -830,5 +833,97 @@ path {
   .flyout-menu {
     left: 0px;
     z-index: 2;
+  }
+}
+
+@media (max-width: 425px) {
+  .sidebar-container {
+    width: calc(100% - 50px);
+    margin-left: -100%;
+  }
+
+  .logo-title h1 {
+    line-height: 1;
+    padding: 0 0 0.175rem 16px;
+    margin-top: 0;
+    width: calc(100% - 46px + 6px);
+    box-sizing: border-box;
+    border-radius: 5px 0 0 5px;
+    border-width: 3px;
+    font-size: 5.5vw;
+    height: 14vw;
+    margin-bottom: 4rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-plus {
+    right: 2.5em;
+    width: 14vw;
+    height: 14vw;
+    box-sizing: border-box;
+    border-radius: 0 5px 5px 0;
+    border-width: 3px;
+    animation: none;
+    box-shadow: none;
+    left: unset;
+    right: 3rem;
+    top: 3rem;
+  }
+
+  .logo-plus .plus {
+    width: 40%;
+    animation: plus-opacity 1.5s infinite ease-in-out;
+  }
+
+  input[type="submit"],
+  input[type="button"],
+  .sp-replacer,
+  .sp-preview,
+  #drawing-tools svg {
+    height: 12vw;
+    max-height: 46px;
+    line-height: 1;
+  }
+
+  .swatches {
+    width: 8vw;
+  }
+  #swatch-container {
+    height: 8vw;
+  }
+}
+
+@media (max-width: 410px) {
+  .logo-title h1 {
+    height: 13vw;
+  }
+
+  .logo-plus {
+    width: 13vw;
+    height: 13vw;
+    right: 2.5rem;
+  }
+
+  #sidebar {
+    padding: 3rem 2.5rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .logo-title h1 {
+    font-size: 5.4vw;
+  }
+}
+
+@media (max-width: 374px) {
+  .logo-title h1 {
+    font-size: 5vw;
+  }
+}
+
+@media (max-width: 359px) {
+  .logo-title h1 {
+    font-size: 5vw;
   }
 }
