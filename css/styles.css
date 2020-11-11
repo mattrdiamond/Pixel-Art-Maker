@@ -44,6 +44,7 @@ body {
   letter-spacing: 0.5px;
   margin: 0;
   min-height: 100%;
+  touch-action: none;
 }
 
 a {
@@ -891,6 +892,10 @@ path {
   }
   #swatch-container {
     height: 8vw;
+  }
+
+  #pixel-canvas.pencil-active td:hover {
+    box-shadow: none;
   }
 }
 
