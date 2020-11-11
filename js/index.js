@@ -220,18 +220,27 @@ $(function () {
     }
   });
 
-  $table.on("mousedown touchstart", "td", function (e) {
+  $table.on("mousedown", "td", function (e) {
     mouseDragging = true;
     // disable drag and drop
     e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     collapseSidebar();
   });
 
-  $table.on("mousemove mouseover mouseenter touchmove", "td", function (e) {
+  $table.on("mousemove mouseover mouseenter", "td", function (e) {
     if (mouseDragging && (activeTool === "pencil" || activeTool === "eraser")) {
       paintPixels(e);
     }
   });
+
+  // ****
+  function mobile(e) {
+    console.log(e.touches, e.type);
+  }
+
+  $table.on("touchstart touchend touchmove", "td", mobile);
+
+  // ****
 
   // when mouse is released, dragging has stopped
   $(document).on(
