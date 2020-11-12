@@ -118,7 +118,10 @@ $(function () {
   }
 
   function collapseSidebar() {
-    if (window.innerWidth > 700 && !$sidebarContainer.hasClass("flyout"))
+    if (
+      (window.innerWidth > 700 || window.innerWidth < 425) &&
+      !$sidebarContainer.hasClass("flyout")
+    )
       return;
     $sidebarContainer.removeClass("flyout");
     $flyoutIcon.removeClass("open");
@@ -233,22 +236,44 @@ $(function () {
     }
   });
 
-  // ****
-  function mobile(e) {
+  // ****************************************
+  function mobileLog(e) {
     console.log(e.touches, e.type);
   }
+  function tstart(e) {
+    if (activeTool === "pencil" || activeTool === "eraser") {
+      mouseDragging = true;
+    }
+    collapseSidebar();
+    console.log("** drag start. mousedragging = ", mouseDragging);
+  }
+  function tmove() {
+    if (mouseDragging && (activeTool === "pencil" || activeTool === "eraser")) {
+      paintPixels(e);
+    }
+    console.log("** touch move. mousedragging = ", mouseDragging);
+  }
+  function tend(e) {
+    mouseDragging = false;
+    if (activeTool === "eyedropper") {
+      const eyedropperValue = $(e.target).css("background-color");
+      $colorPicker.spectrum("set", eyedropperValue);
+      console.log("** touch end. eyedropperValue = ", eyedropperValue);
+    }
+    console.log("** touch end. mousedragging = ", mouseDragging);
+  }
 
-  $table.on("touchstart touchend touchmove", "td", mobile);
+  $table.on("touchstart touchend touchmove touchcancel", "td", mobileLog);
+  $table.on("touchstart", "td", tstart);
+  $table.on("touchmove", "td", tmove);
+  $table.on("touchend", "td", tend);
 
-  // ****
+  // ****************************************
 
   // when mouse is released, dragging has stopped
-  $(document).on(
-    "mouseup mouseleave dragstart touchend touchcancel",
-    function () {
-      mouseDragging = false;
-    }
-  );
+  $(document).on("mouseup mouseleave dragstart", function () {
+    mouseDragging = false;
+  });
 
   // double click to erase
   $table.dblclick(function (e) {
