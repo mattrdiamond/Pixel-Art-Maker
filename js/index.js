@@ -98,7 +98,6 @@ $(function () {
       color = $colorPicker.spectrum("get").toHexString();
     }
     $(e.target).css("background", color);
-    console.log("paint", e.target);
   }
 
   function setGridColor() {
@@ -251,7 +250,12 @@ $(function () {
   function tmove(e) {
     if (mouseDragging && (activeTool === "pencil" || activeTool === "eraser")) {
       paintPixels(e);
-      console.log("** touch move. e = ", e.target);
+      console.log("** touch move. e = ", e, e.target);
+      var target = document.elementFromPoint(
+        e.originalEvent.changedTouches[0].clientX,
+        e.originalEvent.changedTouches[0].clientY
+      );
+      console.log("!!!target", target);
     }
   }
   function tend(e) {
