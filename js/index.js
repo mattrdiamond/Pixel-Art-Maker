@@ -255,9 +255,9 @@ $(function () {
         e.originalEvent.changedTouches[0].clientX,
         e.originalEvent.changedTouches[0].clientY
       );
-      let target2 = document.elementFromPoint(e.clientX, e.clientY);
+      // let target2 = document.elementFromPoint(e.clientX, e.clientY);
       console.log("!!!target", target);
-      console.log("$$target2", target2);
+      // console.log("$$target2", target2);
     }
   }
   function tend(e) {
