@@ -247,7 +247,7 @@ $(function () {
     collapseSidebar();
     console.log("** drag start. mousedragging = ", mouseDragging);
   }
-  function tmove() {
+  function tmove(e) {
     if (mouseDragging && (activeTool === "pencil" || activeTool === "eraser")) {
       paintPixels(e);
     }
