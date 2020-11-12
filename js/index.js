@@ -98,6 +98,7 @@ $(function () {
       color = $colorPicker.spectrum("get").toHexString();
     }
     $(e.target).css("background", color);
+    console.log("paint", e.target);
   }
 
   function setGridColor() {
@@ -250,8 +251,8 @@ $(function () {
   function tmove(e) {
     if (mouseDragging && (activeTool === "pencil" || activeTool === "eraser")) {
       paintPixels(e);
+      console.log("** touch move. e = ", e.target);
     }
-    console.log("** touch move. mousedragging = ", mouseDragging);
   }
   function tend(e) {
     mouseDragging = false;
