@@ -249,15 +249,21 @@ $(function () {
   }
   function tmove(e) {
     if (mouseDragging && (activeTool === "pencil" || activeTool === "eraser")) {
-      paintPixels(e);
-      console.log("** touch move. e = ", e, e.target);
-      var target = document.elementFromPoint(
+      // paintPixels(e);
+      // console.log("** touch move. e = ", e, e.target);
+      const target = document.elementFromPoint(
         e.originalEvent.changedTouches[0].clientX,
         e.originalEvent.changedTouches[0].clientY
       );
-      // let target2 = document.elementFromPoint(e.clientX, e.clientY);
       console.log("!!!target", target);
-      // console.log("$$target2", target2);
+
+      let color;
+      if (activeTool === "eraser") {
+        color = "#ffffff";
+      } else {
+        color = $colorPicker.spectrum("get").toHexString();
+      }
+      $(target).css("background", color);
     }
   }
   function tend(e) {
