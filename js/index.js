@@ -12,7 +12,7 @@ $(function () {
   const $sidebarContainer = $(".sidebar-container");
   const $flyoutIcon = $(".flyout-icon");
 
-  // get max number of pixels that will fit on screen (limit 100)
+  // Get max number of pixels that will fit on screen (limit 100)
   function calculateMaxGrid() {
     const pixelSize = 20,
       limit = 100;
@@ -37,10 +37,9 @@ $(function () {
 
   function getGridSize() {
     const { maxHeight, maxWidth } = calculateMaxGrid();
-    let sliderHeight = $("#input-height").val();
-    let sliderWidth = $("#input-width").val();
+    let sliderHeight = $inputHeight.val();
+    let sliderWidth = $inputWidth.val();
 
-    //check to see if screen size can accomodate user input value
     if (sliderHeight > maxHeight || sliderWidth > maxWidth) {
       $gridMaxAlert.append(
         `Maximum grid size is ${maxWidth} pixels wide by ${maxHeight} pixels high.`
@@ -89,20 +88,27 @@ $(function () {
     }
   }
 
-  // apply color to cells to draw or erase
   function paintPixels(e) {
+    const mouseEvent = e.type === "click" || e.type === "mousemove",
+      target = mouseEvent ? e.target : e;
     let color;
+    // apply color to cells to draw or erase
     if (activeTool === "eraser") {
       color = "#ffffff";
     } else {
       color = $colorPicker.spectrum("get").toHexString();
     }
-    $(e.target).css("background", color);
+    $(target).css("background", color);
   }
 
   function setGridColor() {
     const color = $gridPicker.spectrum("get").toHexString();
     $("td").css("border-color", color);
+  }
+
+  function setEyedropperVal(e) {
+    const eyedropperValue = $(e.target).css("background-color");
+    $colorPicker.spectrum("set", eyedropperValue);
   }
 
   //download a png of the table
@@ -205,6 +211,7 @@ $(function () {
     makeGrid(height, width);
     setGridColor();
     activateTool("pencil");
+    collapseSidebar();
   });
 
   //reset grid
@@ -217,71 +224,43 @@ $(function () {
     if (activeTool === "pencil" || activeTool === "eraser") {
       paintPixels(e);
     } else if (activeTool === "eyedropper") {
-      const eyedropperValue = $(e.target).css("background-color");
-      $colorPicker.spectrum("set", eyedropperValue);
-      activateTool("pencil");
+      setEyedropperVal(e);
     }
   });
 
-  $table.on("mousedown", "td", function (e) {
-    mouseDragging = true;
+  $table.on("mousedown touchstart", "td", function (e) {
+    if (activeTool === "pencil" || activeTool === "eraser") {
+      mouseDragging = true;
+    }
     // disable drag and drop
     e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     collapseSidebar();
   });
 
   $table.on("mousemove mouseover mouseenter", "td", function (e) {
-    if (mouseDragging && (activeTool === "pencil" || activeTool === "eraser")) {
+    if (mouseDragging) {
       paintPixels(e);
     }
   });
 
-  // ****************************************
-  function mobileLog(e) {
-    console.log(e.touches, e.type);
-  }
-  function tstart(e) {
-    if (activeTool === "pencil" || activeTool === "eraser") {
-      mouseDragging = true;
-    }
-    collapseSidebar();
-    console.log("** drag start. mousedragging = ", mouseDragging);
-  }
-  function tmove(e) {
-    if (mouseDragging && (activeTool === "pencil" || activeTool === "eraser")) {
-      // paintPixels(e);
-      // console.log("** touch move. e = ", e, e.target);
+  $table.on("touchmove", "td", function (e) {
+    if (mouseDragging) {
       const target = document.elementFromPoint(
         e.originalEvent.changedTouches[0].clientX,
         e.originalEvent.changedTouches[0].clientY
       );
-      console.log("!!!target", target);
 
-      let color;
-      if (activeTool === "eraser") {
-        color = "#ffffff";
-      } else {
-        color = $colorPicker.spectrum("get").toHexString();
-      }
-      $(target).css("background", color);
+      if (target.nodeName != "TD") return;
+      paintPixels(target);
     }
-  }
-  function tend(e) {
+  });
+
+  $table.on("touchend", "td", function (e) {
     mouseDragging = false;
     if (activeTool === "eyedropper") {
-      const eyedropperValue = $(e.target).css("background-color");
-      $colorPicker.spectrum("set", eyedropperValue);
-      console.log("** touch end. eyedropperValue = ", eyedropperValue);
+      setEyedropperVal(e);
     }
-    console.log("** touch end. mousedragging = ", mouseDragging);
-  }
-
-  $table.on("touchstart touchend touchmove touchcancel", "td", mobileLog);
-  $table.on("touchstart", "td", tstart);
-  $table.on("touchmove", "td", tmove);
-  $table.on("touchend", "td", tend);
-
-  // ****************************************
+  });
 
   // when mouse is released, dragging has stopped
   $(document).on("mouseup mouseleave dragstart", function () {
