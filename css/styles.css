@@ -716,14 +716,14 @@ path {
   cursor: pointer;
   height: 42px;
   margin-right: 0;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   width: 100%;
 }
 
 .sp-preview-inner {
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
 .sp-replacer {

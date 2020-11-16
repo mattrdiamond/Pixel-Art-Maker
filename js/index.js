@@ -88,9 +88,7 @@ $(function () {
     }
   }
 
-  function paintPixels(e) {
-    const mouseEvent = e.type === "click" || e.type === "mousemove",
-      target = mouseEvent ? e.target : e;
+  function paintPixels(target) {
     let color;
     // apply color to cells to draw or erase
     if (activeTool === "eraser") {
@@ -149,6 +147,13 @@ $(function () {
     $inputWidth.rangeslider("update", true);
 
     collapseSidebar();
+  }
+
+  function getElementFromPoint(e) {
+    return document.elementFromPoint(
+      e.originalEvent.changedTouches[0].clientX,
+      e.originalEvent.changedTouches[0].clientY
+    );
   }
 
   /*-----------------------
@@ -219,18 +224,16 @@ $(function () {
     resetTable();
   });
 
-  // single click or click and drag to paint
-  $table.on("click", "td", function (e) {
-    if (activeTool === "pencil" || activeTool === "eraser") {
-      paintPixels(e);
-    } else if (activeTool === "eyedropper") {
-      setEyedropperVal(e);
-    }
-  });
-
   $table.on("mousedown touchstart", "td", function (e) {
     if (activeTool === "pencil" || activeTool === "eraser") {
+      // use elementFromPoint to get target on touch devices
+      const target =
+        e.type === "touchstart" ? getElementFromPoint(e) : e.target;
+
       mouseDragging = true;
+
+      if (target.nodeName != "TD") return;
+      paintPixels(target);
     }
     // disable drag and drop
     e.preventDefault ? e.preventDefault() : (e.returnValue = false);
@@ -239,32 +242,23 @@ $(function () {
 
   $table.on("mousemove mouseover mouseenter", "td", function (e) {
     if (mouseDragging) {
-      paintPixels(e);
+      paintPixels(e.target);
     }
   });
 
   $table.on("touchmove", "td", function (e) {
     if (mouseDragging) {
-      const target = document.elementFromPoint(
-        e.originalEvent.changedTouches[0].clientX,
-        e.originalEvent.changedTouches[0].clientY
-      );
-
-      if (target.nodeName != "TD") return;
+      const target = getElementFromPoint(e);
+      if (!target || target.nodeName != "TD") return;
       paintPixels(target);
     }
   });
 
-  $table.on("touchend", "td", function (e) {
+  $table.on("mouseup mouseleave touchend", function (e) {
     mouseDragging = false;
     if (activeTool === "eyedropper") {
       setEyedropperVal(e);
     }
-  });
-
-  // when mouse is released, dragging has stopped
-  $(document).on("mouseup mouseleave dragstart", function () {
-    mouseDragging = false;
   });
 
   // double click to erase
